@@ -1,36 +1,36 @@
+import React, { useState, useRef } from "react";
+
 function App() {
-  const output = document.getElementById("output");
+  const [output, setOutput] = useState("0");
+  const outputRef = useRef(null);
 
   function includeButton(display) {
-    if (output.value === "0") {
-      output.value = output.value.slice(1) + display;
+    if (output === "0") {
+      setOutput(display);
     } else {
-      output.value += display;
+      setOutput(output + display);
     }
   }
+
   function clearBtn() {
-    output.value = "0";
+    setOutput("0");
   }
 
   function calculate() {
     try {
-      output.value = eval(output.value);
+      setOutput(eval(output).toString());
     } catch (error) {
-      output.value = "Error";
+      setOutput("Error");
       setTimeout(clearBtn, 2000);
     }
   }
 
-  if (isNaN(output)) {
-    output.value = "0";
-  }
-
   return (
-    <body>
+    <div id="myBody">
       <div id="calculatorBorder1"></div>
       <div id="calculatorBorder2"></div>
       <div id="calculatorCtn">
-        <input id="output" readOnly />
+        <input id="output" ref={outputRef} readOnly value={output} />
         <div id="buttons">
           <button onClick={() => includeButton("1")}>1</button>
           <button onClick={() => includeButton("2")}>2</button>
@@ -63,8 +63,9 @@ function App() {
           </button>
         </div>
       </div>
-    </body>
+    </div>
   );
 }
 
 export default App;
+
